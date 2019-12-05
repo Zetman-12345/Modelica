@@ -1,0 +1,42 @@
+{
+  "components": {
+    "plugins": {},
+    "addons": {},
+    "decorators": {},
+    "layouts": {},
+    "routers": {},
+    "seeds": {
+      "MM": {
+        "src": "src/seeds/MM"
+      },
+      "newpro": {
+        "src": "src/seeds/newpro"
+      }
+    },
+    "visualizers": {
+      "graph": {
+        "src": "panels/graph/graphPanel",
+        "title": "graph",
+        "panel": "src/visualizers/panels/graph",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/graph"
+      },
+      "newgraph": {
+        "src": "panels/newgraph/newgraphPanel",
+        "title": "newgraph",
+        "panel": "src/visualizers/panels/newgraph",
+        "secondary": false,
+        "widget": "src/visualizers/widgets/newgraph"
+      }
+    }
+  },
+  "dependencies": {
+    "plugins": {},
+    "addons": {},
+    "decorators": {},
+    "layouts": {},
+    "routers": {},
+    "seeds": {},
+    "visualizers": {}
+  }
+}

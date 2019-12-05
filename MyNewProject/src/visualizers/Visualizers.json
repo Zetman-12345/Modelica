@@ -1,0 +1,14 @@
+[
+  {
+    "id": "graph",
+    "title": "graph",
+    "panel": "panels/graph/graphPanel",
+    "DEBUG_ONLY": false
+  },
+  {
+    "id": "newgraph",
+    "title": "newgraph",
+    "panel": "panels/newgraph/newgraphPanel",
+    "DEBUG_ONLY": false
+  }
+]
