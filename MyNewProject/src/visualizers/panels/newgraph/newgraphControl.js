@@ -136,10 +136,14 @@ define([
     };
 
     newgraphControl.prototype._buildVisualizer = function () {
+        // getting the csv output file as a string file
+        var csv_output = this._widget._bc.getObjectAsString();
+
+        // Creating a 2d int array and 1 d string array
 
 
 
-        
+
     };
 
 
