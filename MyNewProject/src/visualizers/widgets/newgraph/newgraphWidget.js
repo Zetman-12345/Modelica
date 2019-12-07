@@ -35,12 +35,11 @@ define(['plotlyjs',
 
 
     // global variable, selected attribute
-    var selected_attribute;
-
-
+    //var selected_attribute;
 
     // div element for ploty graph
     var myDiv = document.createElement("myDiv");
+    myDiv.style.cssText = 'position:relative;top: 10px;left: 120px;font-size: 40px;text-align: center';
 
     // update the value for x
     var x_axis = [];
@@ -48,43 +47,15 @@ define(['plotlyjs',
     // update the value for y
     var y_axis = [];
 
-
-    myDiv.style.cssText = 'position:relative;top: 10px;left: 120px;font-size: 40px;text-align: center';
-
-
-
-    // the attribute variable
-    var attribute_list = ["a","b","c","d","e","f"];
-
-    var selectList = document.createElement("select");
-    selectList.id = "mySelect";
+    // attribute list value
+    var attribute_list = [];
 
 
-    selectList.style.cssText = 'position:relative;top: 10px;left: 120px;font-size: 40px;text-align: center';
+
+
+
 
     // The button used to submit a properity to generate a graph
-    var button = document.createElement("input");
-    button.type = "button";
-    button.value = "Generate a xy graph";
-    button.style.cssText = 'position:relative;top: 10px;left: 150px;font-size: 40px;text-align: center';
-    button.onclick = function () {
-        // get the Attribute from selector
-        var selected_index = selectList.selectedIndex;
-        selected_attribute = selectList.options[selected_index].text;
-
-        // Pass the date to the graph array
-
-        // plot the graph
-        Plotly.plot( myDiv, [{
-            x: x_axis,
-            y: y_axis }], {
-            margin: { t: 0 } } );
-
-
-    };
-
-
-
 
 
     newgraphWidget.prototype._initialize = function () {
@@ -100,16 +71,6 @@ define(['plotlyjs',
         // Create a dummy header
         this._el.append('<h3>Draw a Graph:</h3>');
 
-        // Generate the dropdown list elements
-        for (var i = 0; i < attribute_list.length; i++) {
-            var option = document.createElement("option");
-            option.value = attribute_list[i];
-            option.text = attribute_list[i];
-            selectList.add(option);
-        }
-
-        this._el.append(selectList);
-        this._el.append(button);
 
 
         // Registering to events can be done with jQuery (as normal)
@@ -130,6 +91,59 @@ define(['plotlyjs',
     newgraphWidget.prototype.onWidgetContainerResize = function (width, height) {
         this._logger.debug('Widget is resizing...');
     };
+
+    // Function that will generate the button and plot
+    // This function should be passed in a 2d int array for creating graph
+    // and also a 1 d String array for attribute dropdown
+    newgraphWidget.prototype.setVissualizer = function(desc,first_row){
+        // the attribute variable
+        var i;
+        for (i = 1; i < first_row.length; i++) {
+            attribute_list.push(first_row[i]);
+        }
+        let selectList = document.createElement("select");
+        selectList.id = "mySelect";
+        selectList.style.cssText = 'position:relative;top: 10px;left: 120px;font-size: 40px;text-align: center';
+        // Generate the dropdown list elements
+        var j;
+        for (j = 0; j < attribute_list.length; j++) {
+            var option = document.createElement("option");
+            option.value = attribute_list[j];
+            option.text = attribute_list[j];
+            selectList.add(option);
+        }
+        // gnerate a button
+        let button = document.createElement("input");
+        button.type = "button";
+        button.value = "Generate a xy graph";
+        button.style.cssText = 'position:relative;top: 10px;left: 150px;font-size: 40px;text-align: center';
+        button.onclick = function () {
+            // get the Attribute from selector
+            let selected_index = selectList.selectedIndex;
+            //selected_attribute = selectList.options[selected_index].text;
+            // Pass the date to the graph array
+            var a; // index for getting the attribute values
+            for (a = 0; a < desc[0].length; a++) {
+                x_axis.push(desc[0][a]);
+                y_axis.push(desc[selected_index + 1][a]);
+            }
+
+            // plot the graph
+            Plotly.plot( myDiv, [{
+                x: x_axis,
+                y: y_axis }], {
+                margin: { t: 0 } } );
+
+
+        };
+
+        this._el.append(selectList);
+        this._el.append(button);
+
+
+
+    };
+
 
     // Adding/Removing/Updating items
     newgraphWidget.prototype.addNode = function (desc) {

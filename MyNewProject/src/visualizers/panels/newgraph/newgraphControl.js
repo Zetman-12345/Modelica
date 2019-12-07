@@ -24,6 +24,7 @@ define([
         // Initialize core collections and variables
         this._widget = options.widget;
 
+
         this._currentNodeId = null;
         this._currentNodeParentId = undefined;
 
@@ -121,6 +122,11 @@ define([
             case CONSTANTS.TERRITORY_EVENT_UNLOAD:
                 this._onUnload(event.eid);
                 break;
+            // Added for building the button and graph in visualizer widget
+            case 'complete':
+                console.log(event);
+                this._buildVisualizer();
+                break;
             default:
                 break;
             }
@@ -128,6 +134,14 @@ define([
 
         this._logger.debug('_eventCallback \'' + events.length + '\' items - DONE');
     };
+
+    newgraphControl.prototype._buildVisualizer = function () {
+
+
+
+        
+    };
+
 
     newgraphControl.prototype._onLoad = function (gmeId) {
         var description = this._getObjectDescriptor(gmeId);
