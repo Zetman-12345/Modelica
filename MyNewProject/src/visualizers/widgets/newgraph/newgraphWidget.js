@@ -50,6 +50,17 @@ define(['plotlyjs',
     // attribute list value
     var attribute_list = [];
 
+    // select list
+    var selectList = document.createElement("select");
+    selectList.id = "mySelect";
+    selectList.style.cssText = 'position:relative;top: 10px;left: 120px;font-size: 40px;text-align: center';
+
+    // button
+    var button = document.createElement("input");
+    button.type = "button";
+    button.value = "Generate a xy graph";
+    button.style.cssText = 'position:relative;top: 10px;left: 150px;font-size: 40px;text-align: center';
+
     newgraphWidget.prototype._initialize = function () {
         var width = this._el.width(),
             height = this._el.height(),
@@ -82,59 +93,61 @@ define(['plotlyjs',
     // This function should be passed in a hash value which would
     // get information from blob client
     newgraphWidget.prototype.setVissualizer = function(hash_val){
-        this._bc.getObjectAsString(hash_val, function(output_csv){
-            let lines = output_csv.split('\n');
-            //document.write(output_csv);
-            // The first line would be the header
-            let first_row = lines[0].split(',');
-            // store data in a 2d array
-            let attribute_number = first_row.length;
-            let arr = new Array(line.length - 1);;
-            for (let index = 1; index < lines.length - 1; index++) {
-                arr[index - 1] = new Array(attribute_number);
-                // split single line by ','
-                let temp = lines[index].split(',');
-                // parse the data to int and store in the table
-                for (let n = 0; n < attribute_number; n++) {
-                    arr[index - 1][n] = parseFloat(temp[n]);
+        this._bc.getObjectAsString(hash_val, function(js,output_csv){
+            if (output_csv) {
+                //document.write(output_csv);
+                let lines = output_csv.split('\n');
+                //document.write(lines[0]);
+                // The first line would be the header
+                let first_row = lines[0].split(',');
+                //document.write(first_row[0]);
+                // store data in a 2d array
+                let attribute_number = first_row.length;
+                //document.write(attribute_number);
+                let arr = new Array(lines.length - 1);
+                for (let index = 1; index < lines.length - 1; index++) {
+                    arr[index - 1] = new Array(attribute_number);
+                    // split single line by ','
+                    let temp = lines[index].split(',');
+                    // parse the data to int and store in the table
+                    for (let n = 0; n < attribute_number; n++) {
+                        arr[index - 1][n] = parseFloat(temp[n]);
+                    }
                 }
-            }
-            // the attribute variable
-            for (let i = 1; i < first_row.length; i++) {
-                attribute_list.push(first_row[i]);
-            }
-            let selectList = document.createElement("select");
-            selectList.id = "mySelect";
-            selectList.style.cssText = 'position:relative;top: 10px;left: 120px;font-size: 40px;text-align: center';
-            // Generate the dropdown list elements
-            for (let j = 0; j < attribute_list.length; j++) {
-                var option = document.createElement("option");
-                option.value = attribute_list[j];
-                option.text = attribute_list[j];
-                selectList.add(option);
-            }
-            // generate a button
-            let button = document.createElement("input");
-            button.type = "button";
-            button.value = "Generate a xy graph";
-            button.style.cssText = 'position:relative;top: 10px;left: 150px;font-size: 40px;text-align: center';
-            button.onclick = function () {
-                // get the Attribute from selector
-                let selected_index = selectList.selectedIndex;
-                //selected_attribute = selectList.options[selected_index].text;
-                // Pass the date to the graph array
-                for (let a = 0; a < arr[0].length; a++) {
-                    x_axis.push(arr[0][a]);
-                    y_axis.push(arr[selected_index + 1][a]);
+                //document.write(arr);
+                // the attribute variable
+                for (let i = 1; i < first_row.length; i++) {
+                    attribute_list.push(first_row[i]);
                 }
-                // plot the graph
-                Plotly.plot( myDiv, [{
-                    x: x_axis,
-                    y: y_axis }], {
-                    margin: { t: 0 } } );
-            };
-            this._el.append(selectList);
-            this._el.append(button);
+                //document.write(attribute_list);
+
+                // Generate the dropdown list elements
+                for (let j = 0; j < attribute_list.length; j++) {
+                    let option = document.createElement("option");
+                    option.value = attribute_list[j];
+                    option.text = attribute_list[j];
+                    selectList.add(option);
+                }
+                // button on click function
+                button.onclick = function () {
+                    // get the Attribute from selector
+                    let selected_index = selectList.selectedIndex;
+                    //selected_attribute = selectList.options[selected_index].text;
+                    // Pass the date to the graph array
+                    for (let a = 0; a < arr[0].length; a++) {
+                        x_axis.push(arr[0][a]);
+                        y_axis.push(arr[selected_index + 1][a]);
+                    }
+                    // plot the graph
+                    Plotly.plot( myDiv, [{
+                        x: x_axis,
+                        y: y_axis }], {
+                        margin: { t: 0 } } );
+                };
+
+            } else {
+                document.write("null object");
+            }
         });
     };
 
@@ -182,6 +195,9 @@ define(['plotlyjs',
 
     newgraphWidget.prototype.onBackgroundDblClick = function () {
         //this._el.append('<div>Background was double-clicked!!</div>');
+
+        this._el.append(selectList);
+        this._el.append(button);
         this._el.append(myDiv);
 
     };
