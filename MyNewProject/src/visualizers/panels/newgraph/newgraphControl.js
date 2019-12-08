@@ -142,8 +142,10 @@ define([
     newgraphControl.prototype._buildVisualizer = function (gmeId) {
         // pass the hash value of the csv output file
         var node = this._client.getNode(gmeId);
-        var hash_val = this._core.getAttribute(node, "simResults");
-        this._widget.setVissualizer(hash_val);
+        if (node != null) {
+            var myHash = node.getAttribute('simResults');
+            this._widget.setVissualizer(myHash);
+        }
     };
 
 
