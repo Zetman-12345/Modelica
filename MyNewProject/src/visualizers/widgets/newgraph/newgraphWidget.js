@@ -93,9 +93,14 @@ define(['plotlyjs',
     };
 
     // Function that will generate the button and plot
-    // This function should be passed in a 2d int array for creating graph
-    // and also a 1 d String array for attribute dropdown
-    newgraphWidget.prototype.setVissualizer = function(desc,first_row){
+    // This function should be passed in a hash value which would
+    // get information from blob client
+    newgraphWidget.prototype.setVissualizer = function(hash_val){
+        var output_csv = this._bc.getObjectAsString(hash_val);
+
+
+        // first_row
+        // desc
         // the attribute variable
         var i;
         for (i = 1; i < first_row.length; i++) {

@@ -24,6 +24,9 @@ define([
         // Initialize core collections and variables
         this._widget = options.widget;
 
+        // added
+        this._core = options.core;
+
 
         this._currentNodeId = null;
         this._currentNodeParentId = undefined;
@@ -125,7 +128,7 @@ define([
             // Added for building the button and graph in visualizer widget
             case 'complete':
                 console.log(event);
-                this._buildVisualizer();
+                this._buildVisualizer(event.eid);
                 break;
             default:
                 break;
@@ -135,15 +138,12 @@ define([
         this._logger.debug('_eventCallback \'' + events.length + '\' items - DONE');
     };
 
-    newgraphControl.prototype._buildVisualizer = function () {
-        // getting the csv output file as a string file
-        var csv_output = this._widget._bc.getObjectAsString();
-
-        // Creating a 2d int array and 1 d string array
-
-
-
-
+    // Function used to pass the hashvalue to widget and build the button and graph
+    newgraphControl.prototype._buildVisualizer = function (gmeId) {
+        // pass the hash value of the csv output file
+        var node = this._client.getNode(gmeId);
+        var hash_val = this._core.getAttribute(node, "simResults");
+        this._widget.setVissualizer(hash_val);
     };
 
 
