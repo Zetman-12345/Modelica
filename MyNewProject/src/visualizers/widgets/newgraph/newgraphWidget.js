@@ -50,14 +50,6 @@ define(['plotlyjs',
     // attribute list value
     var attribute_list = [];
 
-
-
-
-
-
-    // The button used to submit a properity to generate a graph
-
-
     newgraphWidget.prototype._initialize = function () {
         var width = this._el.width(),
             height = this._el.height(),
@@ -66,12 +58,8 @@ define(['plotlyjs',
         // set widget class
         this._el.addClass(WIDGET_CLASS);
 
-
-
         // Create a dummy header
         this._el.append('<h3>Draw a Graph:</h3>');
-
-
 
         // Registering to events can be done with jQuery (as normal)
         this._el.on('dblclick', function (event) {
@@ -80,8 +68,6 @@ define(['plotlyjs',
             self.onBackgroundDblClick();
         });
     };
-
-
 
     // Collecting date method
     newgraphWidget.prototype.collectData = function () {
@@ -96,9 +82,13 @@ define(['plotlyjs',
     // This function should be passed in a hash value which would
     // get information from blob client
     newgraphWidget.prototype.setVissualizer = function(hash_val){
-        let output_csv = this._bc.getObjectAsString(hash_val);
+        let output_csv = this._bc.getObjectAsString(hash_val, function () {
+            document.write("getObjectAsString");
+        });
+
         // split the string file into array
         let lines = output_csv.split('\n');
+        //document.write(output_csv);
         // The first line would be the header
         let first_row = lines[0].split(',');
 
@@ -111,7 +101,7 @@ define(['plotlyjs',
             let temp = lines[index].split(',');
             // parse the data to int and store in the table
             for (let n = 0; n < attribute_number; n++) {
-                arr[index - 1][n] = parseInt(temp[n]);
+                arr[index - 1][n] = parseFloat(temp[n]);
             }
         }
 
