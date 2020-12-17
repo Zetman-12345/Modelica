@@ -18,7 +18,7 @@
     "webgme": "^2.23.0"
   },
   "devDependencies": {
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.10.22",
     "mocha": "^5.2.0",
     "webgme": "^2.23.0"
   },
